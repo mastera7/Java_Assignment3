@@ -18,7 +18,7 @@ public class Main {
                     System.out.println(QS());
                     break;
                 case 3:
-                    System.out.println(new BST());
+                    System.out.println(BST());
                     break;
                 case 4:
                     System.out.println("Oops! Didn't finished it (");
@@ -32,15 +32,17 @@ public class Main {
 
     static String MS() {
         Scanner scan = new Scanner(System.in);
+        System.out.println("Choose number of words:");
         int n = scan.nextInt();
         String[] sarray = new String[n];
+        System.out.println("Write your words:");
         for (int i = 0; i < n; i++) {
             sarray[i] = scan.next();
         }
         MergeSort<String> stringSorter = new MergeSort<>();
         stringSorter.mSort(sarray, 0, sarray.length - 1);
         System.out.println(java.util.Arrays.toString(sarray));
-        return "Here we go again! Choose the next task 1 or 3:";
+        return "Here we go again! Choose the next task 1 or 4:";
 
     }
 
@@ -53,46 +55,72 @@ public class Main {
         System.out.println(java.util.Arrays.toString(arrayOfStrings));
 
 
-        return "Here we go again! Choose the next task 1 or 3:";
+        return "Here we go again! Choose the next task 1 or 4:";
     }
 
-    public static class BST< T extends Comparable<T>> {
-        Node root;
+    public static class BinarySearchTree{
         class Node {
-            final ThreadLocal<T> data = new ThreadLocal<T>();
-            Node left;
-            Node right;
+            int key;
+            Node left, right;
 
-            public Node(T data) {
-                this.data.set(data);
+            public Node(int item) {
+                key = item;
+                left = right = null;
             }
         }
 
-        public boolean isempty() {
-            return root == null;
+        Node root;
+
+        BinarySearchTree() {
+            root = null;
         }
 
-        public void insert(T val) {
-            if(isempty())
-                root = new Node(val);
-            insert(root, val);
+        void insert(int key) {
+            root = insertRec(root, key);
         }
 
-        private void insert(Node node, T val) {
+        Node insertRec(Node root, int key) {
+            Node result;
 
-            if(val.compareTo((T) node.data) < 0) {
-                if (node.left != null) {
-                } else {
-                    node.left = new Node(val);
-                }
-                insert(node.left, val);
+            if (root == null) {
+                root = new Node(key);
+                result = root;
+            } else {
+                if (key < root.key)
+                    root.left = insertRec(root.left, key);
+                else if (key > root.key)
+                    root.right = insertRec(root.right, key);
+                result = root;
             }
-            if(node.right == null)
-                node.right = new Node(val);
-            insert(node.right, val);
+
+            return result;
         }
+
+        void inorder() {
+            inorderRec(root);
+        }
+
+        void inorderRec(Node root) {
+            if (root != null) {
+                inorderRec(root.left);
+                System.out.println(root.key);
+                inorderRec(root.right);
+            }
+        }
+
+
     }
+    static String BST(){
+        {
+            BinarySearchTree tree = new BinarySearchTree();
 
+            for (int i : new int[]{50, 30, 20, 40, 70, 60, 80}) {
+                tree.insert(i);
+            }
 
+            tree.inorder();
+        }
+        return "Here we go again! Choose the next task 1 or 4:";
+    }
 }
 
